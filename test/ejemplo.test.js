@@ -1,5 +1,6 @@
-const ejemplo = require('../ejemplo');  // <-- aquí importamos el archivo ejemplo.js
+const ejemplo = require('../ejemplo');
 
 test('suma simple', () => {
-  expect(ejemplo.sumar(1, 1)).toBe(2);  // usamos la función sumar del ejemplo.js
+  // Esto fallará a propósito
+  expect(ejemplo.sumar(1, 1)).toBe(3);
 });
