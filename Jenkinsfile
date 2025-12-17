@@ -10,7 +10,7 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/test-results/**/*.xml' // Reportes de tests (Jest, JUnit)
+                    junit 'test-results/results.xml'
                 }
             }
         }
