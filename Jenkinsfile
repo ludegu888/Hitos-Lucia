@@ -2,24 +2,46 @@ pipeline {
     agent any
 
     stages {
+        stage('Build') {
+            steps {
+                echo 'Instalando dependencias y ejecutando build...'
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+
         stage('Test') {
             steps {
                 echo 'Ejecutando tests automáticos...'
-                sh 'npm install'           // Instala dependencias
-                sh 'npm test'              // Ejecuta los tests
+                sh 'npx jest --reporters=default --reporters=jest-junit'
             }
             post {
                 always {
                     junit 'test-results/results.xml'
                 }
+                unsuccessful {
+                    echo 'Los tests han fallado. Pipeline detenido.'
+                    error('Pipeline detenido por fallo en tests.')
+                }
             }
         }
 
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                echo 'Construyendo aplicación...'
-                sh 'npm run build'
+                echo 'Desplegando aplicación localmente...'
+                sh 'mkdir -p /var/www/app'
+                sh 'cp -r * /var/www/app/'
             }
         }
     }
+
+    post {
+        success {
+            echo 'Pipeline completado con éxito. Aplicación desplegada.'
+        }
+        failure {
+            echo 'Pipeline falló.'
+        }
+    }
 }
+
