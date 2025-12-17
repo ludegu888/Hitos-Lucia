@@ -4,17 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Iniciando build...'
-                sh 'npm instalar'
-                sh 'npm run build'
+                echo 'Forzando fallo a propósito'
+                sh 'exit 1'  // Esto hace que la etapa falle
             }
         }
     }
-
-    post {
-        always {
-            archiveArtifacts artifacts: '**/dist/**', allowEmptyArchive: true
-            junit '**/test-results/**/*.xml'
-        }
-    }
 }
+
