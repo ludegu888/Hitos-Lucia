@@ -2,10 +2,23 @@ pipeline {
     agent any
 
     stages {
+        stage('Test') {
+            steps {
+                echo 'Ejecutando tests automáticos...'
+                sh 'npm install'           // Instala dependencias
+                sh 'npm test'              // Ejecuta los tests
+            }
+            post {
+                always {
+                    junit '**/test-results/**/*.xml' // Reportes de tests (Jest, JUnit)
+                }
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Forzando fallo a propósito'
-                sh 'exit 1'   // Este comando siempre falla
+                echo 'Construyendo aplicación...'
+                sh 'npm run build'
             }
         }
     }
