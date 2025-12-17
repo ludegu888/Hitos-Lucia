@@ -5,7 +5,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Forzando fallo a propósito'
-                sh 'exit 1'  // Esto hace que la etapa falle
+                sh 'npm run build123'   
+                sh 'exit 1'  
             }
         }
     }
