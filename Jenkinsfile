@@ -27,12 +27,25 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                echo 'Desplegando aplicación localmente...'
-                sh 'mkdir -p /var/www/app'
-                sh 'cp -r * /var/www/app/'
-            }
-        }
+    steps {
+        echo '=== DEPLOY ==='
+        sh '''
+          echo "WORKSPACE:"
+          pwd
+          echo "CONTENIDO DEL WORKSPACE:"
+          ls -la
+
+          mkdir -p /var/www/app
+          rm -rf /var/www/app/*
+
+          echo "COPIANDO ARCHIVOS..."
+          cp -r ./* /var/www/app/
+
+          echo "CONTENIDO DESPLEGADO:"
+          ls -la /var/www/app
+        '''
+    }
+}
     }
 
     post {
