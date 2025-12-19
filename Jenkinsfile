@@ -13,39 +13,20 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Ejecutando tests automáticos...'
-                sh 'npx jest --reporters=default --reporters=jest-junit'
-            }
-            post {
-                always {
-                    junit 'test-results/results.xml'
-                }
-                unsuccessful {
-                    echo 'Los tests han fallado. Pipeline detenido.'
-                    error('Pipeline detenido por fallo en tests.')
-                }
+                sh 'npm test'
             }
         }
 
         stage('Deploy') {
-    steps {
-        echo '=== DEPLOY ==='
-        sh '''
-          echo "WORKSPACE:"
-          pwd
-          echo "CONTENIDO DEL WORKSPACE:"
-          ls -la
-
-          mkdir -p /var/www/app
-          rm -rf /var/www/app/*
-
-          echo "COPIANDO ARCHIVOS..."
-          cp -r ./* /var/www/app/
-
-          echo "CONTENIDO DESPLEGADO:"
-          ls -la /var/www/app
-        '''
-    }
-}
+            steps {
+                echo 'Desplegando aplicación...'
+                sh '''
+                  mkdir -p /var/www/app
+                  rm -rf /var/www/app/*
+                  cp -r ejemplo.js package.json test /var/www/app/
+                '''
+            }
+        }
     }
 
     post {
@@ -57,4 +38,5 @@ pipeline {
         }
     }
 }
+
 
